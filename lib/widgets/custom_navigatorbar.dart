@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_scan/providers/ui_provider.dart';
 
 class CustomNavigationBar extends StatelessWidget {
+  const CustomNavigationBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final currentIndex = 0;
+    final uiProvider = Provider.of<UIProvider>(context);
+    final currentIndex = uiProvider.selectedMenuOpt;
 
     return BottomNavigationBar(
         elevation: 0,
         currentIndex: currentIndex,
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Mapa',
@@ -17,6 +22,8 @@ class CustomNavigationBar extends StatelessWidget {
             icon: Icon(Icons.compass_calibration),
             label: 'Direccions',
           )
-        ]);
+        ],
+        onTap: (value) => uiProvider.selectedMenuOpt = value
+    );
   }
 }
