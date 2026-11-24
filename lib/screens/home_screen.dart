@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_scan/models/scan_model.dart';
-import 'package:qr_scan/providers/db_provider.dart';
+import 'package:qr_scan/providers/scan_list_provider.dart';
 import 'package:qr_scan/providers/ui_provider.dart';
 import 'package:qr_scan/screens/screens.dart';
 import 'package:qr_scan/widgets/widgets.dart';
@@ -17,7 +16,9 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<ScanListProvider>(context, listen: false).esborraTots();
+            },
           )
         ],
       ),
@@ -35,17 +36,19 @@ class _HomeScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uiProvider = Provider.of<UIProvider>(context);
-    DBProvider.db.database;
-    DBProvider.db.insertScan(ScanModel(valor: "https://paucasesnovescifp.cat"));
+    final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
 
     switch (uiProvider.selectedMenuOpt) {
       case 0:
+        scanListProvider.carregaScansPerTipus("geo");
         return const MapasScreen();
 
       case 1:
+        scanListProvider.carregaScansPerTipus("http");
         return const DireccionsScreen();
 
       default:
+        scanListProvider.carregaScansPerTipus("geo");
         return const MapasScreen();
     }
   }
